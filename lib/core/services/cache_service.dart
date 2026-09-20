@@ -10,7 +10,7 @@ class CacheHelper {
     _sharedPreferences = await SharedPreferences.getInstance();
   }
 
-  /// Get generic dynamic data by key.
+  /// Get generic dynamic data by key.b 
   static dynamic getData({required String key}) {
     return _sharedPreferences.get(key);
   }

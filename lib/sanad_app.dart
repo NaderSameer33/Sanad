@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'core/services/di.dart';
 import 'core/theme/app_theme.dart';
 import 'core/theme/logic/theme_cubit.dart';
 import 'core/theme/logic/theme_state.dart';
@@ -9,11 +10,13 @@ class SanadApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => ThemeCubit(),
+    return BlocProvider.value(
+      value: getIt<ThemeCubit>(),
       child: BlocBuilder<ThemeCubit, ThemeState>(
         builder: (context, state) {
           return MaterialApp(
+            themeAnimationCurve: Curves.fastEaseInToSlowEaseOut,
+            themeAnimationDuration: Duration(milliseconds: 750),
             debugShowCheckedModeBanner: false,
             title: 'سَنَد - Sanad',
             theme: AppTheme.lightTheme,
@@ -25,12 +28,16 @@ class SanadApp extends StatelessWidget {
                 actions: [
                   IconButton(
                     icon: Icon(
-                      state.isDarkMode ? Icons.wb_sunny_outlined : Icons.nightlight_round,
+                      state.isDarkMode
+                          ? Icons.wb_sunny_outlined
+                          : Icons.nightlight_round,
                     ),
                     onPressed: () {
-                      context.read<ThemeCubit>().toggleTheme();
+                      getIt<ThemeCubit>().toggleTheme();
                     },
-                    tooltip: state.isDarkMode ? 'الوضع النهاري' : 'الوضع السكيني (الليلي)',
+                    tooltip: state.isDarkMode
+                        ? 'الوضع النهاري'
+                        : 'الوضع السكيني (الليلي)',
                   ),
                 ],
               ),
@@ -53,7 +60,7 @@ class SanadApp extends StatelessWidget {
                       const SizedBox(height: 32),
                       ElevatedButton.icon(
                         onPressed: () {
-                          context.read<ThemeCubit>().toggleTheme();
+                          getIt<ThemeCubit>().toggleTheme();
                         },
                         icon: Icon(
                           state.isDarkMode ? Icons.light_mode : Icons.dark_mode,
